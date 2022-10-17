@@ -101,21 +101,43 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 					
 					
 		System.out.println("Bienvenido a la agencia de turismo PINKILO :"
-				+ "1.-Ver datos de empresa"
-				+ "2.-ver Empleados"
-				+ "3.-ver Visitas guiadas"
-				+ "4.-ver Clientes"
-				+ "5.-despedir Empleado"
-				+ "6.-Desactivar visita guiada"
-				+ "7.-Vetar cliente"
-				+ "8.-volver al inicio");
+				+ " 1.-Ver datos de empresa"
+				+ " 2.-ver Empleados"
+				+ " 3.-ver Visitas guiadas"
+				+ " 4.-ver Clientes"
+				+ " 5.-despedir Empleado"
+				+ " 6.-Desactivar visita guiada"
+				+ " 7.-Vetar cliente"
+				+ " 8.-volver al inicio");
 		int eleccion = Integer.parseInt(reader.readLine());
-		
+		//DATOS DE EMPRESA
 		if(eleccion==1) {
-			DatosBD(conexion, dbmd);
+			try {
+				
+				Statement sentencia = conexion.createStatement();
+				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM empresa");
+				
+				// Recorremos el resultado para visualizar 
+				// Se hace un bucle mientras haya registros visualizando
+				while (resul.next())
+				{
+				System.out.println ("Nombre: "+resul.getString(1) + " Apertura: "+resul.getString(2)+ " Dirección: " + resul.getString(3)+" Propietario: "+resul.getString(4));
+				}
+				
+				resul.close();// Cerrar ResultSet
+				sentencia.close();// Cerrar Statement
+				
+				System.out.println("Fin de lectura");
+
+				}catch (SQLException e) {
+				System.out.println("error conn la base de datos");
+				
+				}
+			Mpinkilo(reader);
+			
 			
 		}
-		
+		//VER EMPLEADOS
 		if(eleccion==2) {
 			try {
 				
@@ -132,12 +154,65 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				
 				resul.close();// Cerrar ResultSet
 				sentencia.close();// Cerrar Statement
+				
+				System.out.println("Fin de lectura");
 
 				}catch (SQLException e) {
 				System.out.println("error conn la base de datos");
 				
 				}
+			Mpinkilo(reader);
 			
+		}
+		
+		if(eleccion==3) {
+			try {
+				
+				Statement sentencia = conexion.createStatement();
+				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM visitas");
+				
+				// Recorremos el resultado para visualizar 
+				// Se hace un bucle mientras haya registros visualizando
+				while (resul.next())
+				{
+				System.out.println ("Codigo: "+resul.getInt(1) + " Nombre: "+resul.getString(2)+ " Tematica: " + resul.getString(3)+" Número de clientes permitidos: "+resul.getInt(4)+" Coste: "+resul.getDouble(5)+
+						" Lugar de Partida: "+resul.getString(6)+" Ubicación: "+resul.getString(7));
+				}
+				
+				resul.close();// Cerrar ResultSet
+				sentencia.close();// Cerrar Statement
+				
+				System.out.println("Fin de lectura");
+
+				}catch (SQLException e) {
+				System.out.println("error conn la base de datos");
+				
+				}
+			Mpinkilo(reader);
+		}
+		if(eleccion==4) {
+			try {
+				
+				Statement sentencia = conexion.createStatement();
+				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM clientes");
+				
+				// Recorremos el resultado para visualizar 
+				// Se hace un bucle mientras haya registros visualizando
+				while (resul.next())
+				{
+				System.out.println ("DNI: "+resul.getString(1) + " Nombre: "+resul.getString(2)+ " Apellido: " + resul.getString(3)+" Edad: "+resul.getInt(4)+" Profesión: "+resul.getString(5));
+				}
+				
+				resul.close();// Cerrar ResultSet
+				sentencia.close();// Cerrar Statement
+				
+				System.out.println("Fin de lectura");
+
+				}catch (SQLException e) {
+				System.out.println("error conn la base de datos");
+				
+				}
+			Mpinkilo(reader);
 		}
 	}
 
