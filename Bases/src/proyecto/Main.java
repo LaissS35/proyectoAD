@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,7 +13,7 @@ import com.mysql.cj.jdbc.DatabaseMetaData;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, NumberFormatException, ClassNotFoundException, SQLException {
 		// H2, mysql
 		
 		
@@ -61,7 +62,7 @@ public class Main {
 	
 	
 	
-	private static void menu() throws NumberFormatException, IOException {
+	private static void menu() throws NumberFormatException, IOException, ClassNotFoundException, SQLException {
 BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("Bienvenido!¿que agencia deseas consultar?:"
@@ -87,7 +88,18 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 	}
 	//PINKILO
 
-	private static void Mpinkilo(BufferedReader reader) throws NumberFormatException, IOException {
+	private static void Mpinkilo(BufferedReader reader) throws NumberFormatException, IOException, SQLException, ClassNotFoundException {
+				//Cargar el driver
+				
+					Class.forName("com.mysql.cj.jdbc.Driver");
+				
+				// Establecemos la conexion con la BD
+				
+					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7");
+					DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();//Creamos objeto DatabaseMetaData
+					
+					
+					
 		System.out.println("Bienvenido a la agencia de turismo PINKILO :"
 				+ "1.-Ver datos de empresa"
 				+ "2.-ver Empleados"
@@ -100,23 +112,29 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 		int eleccion = Integer.parseInt(reader.readLine());
 		
 		if(eleccion==1) {
+			DatosBD(conexion, dbmd);
+			
+		}
+		
+		if(eleccion==2) {
 			try {
 				
 				Statement sentencia = conexion.createStatement();
 				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM Empleados");
 				
-				// Recorremos el resultado para visualizar c
+				// Recorremos el resultado para visualizar 
 				// Se hace un bucle mientras haya registros visualizando
 				while (resul.next())
 				{
-				System.out.println ("ID: "+resul.getInt(1) + " Nombre: "+resul.getString(2)+ " Apellido: " + resul.getString(3)+" Oficion: "+resul.getString(4)+" Salario: "+resul.getDouble(5));
+				System.out.println ("DNI: "+resul.getString(1) + " Nombre: "+resul.getString(2)+ " Apellido: " + resul.getString(3)+" Fecha de Nacimiento: "+resul.getString(4)+" Fecha Alta: "+resul.getString(5)+
+						" Nacionalidad: "+resul.getString(6)+" Cargos: "+resul.getString(7)+" ESta acagor de la visita con codigo: "+resul.getInt(8));
 				}
 				
 				resul.close();// Cerrar ResultSet
 				sentencia.close();// Cerrar Statement
 
 				}catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("error conn la base de datos");
 				
 				}
 			
