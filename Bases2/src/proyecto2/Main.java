@@ -1,4 +1,5 @@
-package proyecto;
+package proyecto2;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import com.mysql.cj.jdbc.DatabaseMetaData;
 public class Main {
 
 	public static void main(String[] args) throws IOException, NumberFormatException, ClassNotFoundException, SQLException {
-		// H2, mysql
+		// H2, mysql, sqllite
 		
 		
 		menu();
@@ -81,41 +82,36 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			
 		}
 		if(opcion==3) {
+			Mcaloriego(reader);
 			
 		}
 		
 		
 	}
+	private static void Mcaloriego(BufferedReader reader) throws ClassNotFoundException, SQLException {
+		//SQLlite
+		//Driver
+		Class.forName("org.sqlite.JDBC");
+		// Establecemos la conexion con la BD
+	
+		Connection conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
+		
+	}
+	
 	//PINKILO
 
 	private static void Mpinkilo(BufferedReader reader) throws NumberFormatException, IOException, SQLException, ClassNotFoundException {
+				//H2
+		
 				//Cargar el driver
-				/*Class.forName("com.mysql.cj.jdbc.Driver");
+					Class.forName("com.mysql.cj.jdbc.Driver");
 				
 				// Establecemos la conexion con la BD
 				
-					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7");*/ //H2 creo
+					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7"); //H2 creo
 				
-					
-				
-				// Establecemos la conexion con la BD
-					
-					//SQLlite
-		Class.forName("org.sqlite.JDBC");
-				
-					Connection conexion = null;
-					try {
-						conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-	
-					
-				//	DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();//Creamos objeto DatabaseMetaData H2
-					
-					
-					
+					DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();//Creamos objeto DatabaseMetaData H2
+			
 		System.out.println("Bienvenido a la agencia de turismo PINKILO :"
 				+ " 1.-Ver datos de empresa"
 				+ " 2.-ver Empleados"
@@ -126,6 +122,9 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				+ " 7.-Vetar cliente"
 				+ " 8.-volver al inicio");
 		int eleccion = Integer.parseInt(reader.readLine());
+		
+		
+		
 		//DATOS DE EMPRESA
 		if(eleccion==1) {
 			try {
@@ -159,7 +158,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			try {
 				
 				Statement sentencia = conexion.createStatement();
-				//ResultSet resul = sentencia.executeQuery("SELECT * FROM empleados");
+				
 				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("select * from empleados");
 				
 				// Recorremos el resultado para visualizar 
@@ -233,6 +232,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			Mpinkilo(reader);
 		}
 	}
-
-
 }
+
+
+
