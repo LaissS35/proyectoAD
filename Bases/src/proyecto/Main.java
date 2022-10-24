@@ -68,7 +68,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Bienvenido!¿que agencia deseas consultar?:"
 				+ "1.-Agencia Pinkilo (H2)"
 				+ "2.-Agencia Avian(Mysql)"
-				+ "3.-Agencia Caloriego(?)");
+				+ "3.-Agencia Caloriego(SQLlite)");
 		
 		int opcion= Integer.parseInt(reader.readLine());//coger un valor integer
 		
@@ -90,13 +90,29 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 
 	private static void Mpinkilo(BufferedReader reader) throws NumberFormatException, IOException, SQLException, ClassNotFoundException {
 				//Cargar el driver
-				
-					Class.forName("com.mysql.cj.jdbc.Driver");
+				/*Class.forName("com.mysql.cj.jdbc.Driver");
 				
 				// Establecemos la conexion con la BD
 				
-					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7");
-					DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();//Creamos objeto DatabaseMetaData
+					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7");*/ //H2 creo
+				
+					
+				
+				// Establecemos la conexion con la BD
+					
+					//SQLlite
+		Class.forName("org.sqlite.JDBC");
+				
+					Connection conexion = null;
+					try {
+						conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	
+					
+				//	DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();//Creamos objeto DatabaseMetaData H2
 					
 					
 					
@@ -113,6 +129,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 		//DATOS DE EMPRESA
 		if(eleccion==1) {
 			try {
+			
 				
 				Statement sentencia = conexion.createStatement();
 				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM empresa");
@@ -142,7 +159,8 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			try {
 				
 				Statement sentencia = conexion.createStatement();
-				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM Empleados");
+				//ResultSet resul = sentencia.executeQuery("SELECT * FROM empleados");
+				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("select * from empleados");
 				
 				// Recorremos el resultado para visualizar 
 				// Se hace un bucle mientras haya registros visualizando
@@ -158,7 +176,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				System.out.println("Fin de lectura");
 
 				}catch (SQLException e) {
-				System.out.println("error conn la base de datos");
+					e.printStackTrace();
 				
 				}
 			Mpinkilo(reader);
@@ -167,7 +185,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 		
 		if(eleccion==3) {
 			try {
-				
+			
 				Statement sentencia = conexion.createStatement();
 				ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM visitas");
 				
@@ -215,5 +233,6 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			Mpinkilo(reader);
 		}
 	}
+
 
 }
