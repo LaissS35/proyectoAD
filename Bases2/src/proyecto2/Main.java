@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -88,13 +89,34 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 		
 		
 	}
-	private static void Mcaloriego(BufferedReader reader) throws ClassNotFoundException, SQLException {
+	private static void Mcaloriego(BufferedReader reader) throws ClassNotFoundException, SQLException, NumberFormatException, IOException {
 		//SQLlite
 		//Driver
 		Class.forName("org.sqlite.JDBC");
 		// Establecemos la conexion con la BD
-	
 		Connection conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
+		
+		
+		
+		System.out.println("Bienvenido a la agencia de turismo PINKILO :"
+				+ " 1.-Ver datos de empresa"
+				+ " 2.-ver Empleados"
+				+ " 3.-ver Visitas guiadas"
+				+ " 4.-ver Clientes"
+				+ " 5.-despedir Empleado"
+				+ " 6.-Desactivar visita guiada"
+				+ " 7.-Eliminar cliente"
+				+ " 8.-volver al inicio"
+				+"  9.-Eliminar visita guiada"
+				+"  10.-Añadir nuevo cliente"
+				+ " 11.-Añadir nueva visita guiada"
+				+ " 12.-Contratar nuevo empleado"
+				+ " 13.-Editar visita guiada"
+				+  "14.-Asignar nueva visita guiada a Empleado"
+				+"  15.-Editar cliente");
+		int eleccion = Integer.parseInt(reader.readLine());
+		
+			
 		
 	}
 	
@@ -108,7 +130,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				
 				// Establecemos la conexion con la BD
 				
-					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7"); //H2 creo
+					Connection conexion =DriverManager.getConnection("jdbc:mysql://localhost/turismo","root", "soylalecheN7"); //mysql
 				
 					DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();//Creamos objeto DatabaseMetaData H2
 			
@@ -120,7 +142,8 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				+ " 5.-despedir Empleado"
 				+ " 6.-Desactivar visita guiada"
 				+ " 7.-Vetar cliente"
-				+ " 8.-volver al inicio");
+				+ " 8.-volver al inicio"
+				+"  9.-Contratar Empleado");
 		int eleccion = Integer.parseInt(reader.readLine());
 		
 		
@@ -181,7 +204,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			Mpinkilo(reader);
 			
 		}
-		
+		//VER VISITAS
 		if(eleccion==3) {
 			try {
 			
@@ -207,6 +230,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				}
 			Mpinkilo(reader);
 		}
+		//VER CLIENTES
 		if(eleccion==4) {
 			try {
 				
@@ -230,6 +254,233 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				
 				}
 			Mpinkilo(reader);
+		}
+		//DESPEDIR CLEINTE
+		if(eleccion==5) {
+			//funciona elimina linea seleccionada
+			//despedir empleado por DNI
+			System.out.print("Escribe el DNI del empleado que quieres despedir");
+			String empleado = reader.readLine();
+			
+			
+			String query ="DELETE FROM empleados WHERE `DNI`='"+empleado+"'";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);//con este metodo ya que estamos haciendo un cambio en la base
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+			
+			System.out.println("empleado despedido");
+			//vuelta al menu
+			Mpinkilo(reader);
+		}
+		////DESACTIVAR VISITA GUIADA
+		if(eleccion==6) {
+			//funciona, desactiva
+			//cambiar estado de visita guiada a desactivado
+			System.out.println("Escribe el codigo de la visita que quieres desactivar");
+			int codigo= Integer.parseInt(reader.readLine());
+			
+			String query ="UPDATE visitas SET `Estado` = 'Desactivo' WHERE (`Codigo`='"+codigo+"')";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+		}
+		//ELIMINAR CLIENTE
+		if(eleccion==7) {
+			//eliminar cliente
+			//funciona elimina linea seleccionada
+			//despedir empleado por DNI
+			System.out.print("Escribe el DNI del cliente que quieras echar");//AQUI
+			
+			
+			String query ="DELETE FROM empleados WHERE `DNI`='"+empleado+"'";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);//con este metodo ya que estamos haciendo un cambio en la base
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+			
+			System.out.println("empleado despedido");
+		}
+		if(eleccion==8) {
+			System.out.println("Vuelves al menu principal");
+			menu();
+		}
+		if(eleccion==9) {
+			//probar
+			
+				System.out.print("Escribe el DNI del nuevo empleado");
+				String DNI = reader.readLine();
+				System.out.print("Escribe el nombre del nuevo empleado:");
+				String nombre = reader.readLine();
+				System.out.print("Escribe su apellido");
+				String apellido = reader.readLine();
+				System.out.print("Fecha de nacimiento");
+				String oficio =reader.readLine();
+				System.out.print("Fecha alta");
+				String Falta=reader.readLine();
+				System.out.print("Nacionalidad");
+				String nacionaliddad = reader.readLine();
+				System.out.println("Oficio");
+				String cargo= reader.readLine();
+				System.out.println("Número de visita guiada de la que esta acargo");
+				int Ndepa= Integer.parseInt(reader.readLine());
+				
+				try {
+				
+				
+				 String query = "INSERT INTO Empleados(`DNI`,`Nombre`, `Apellido`, `F.nacimiento`, `F.alta`,`Nacionalidad`.`Cargo`,`V.cargo`) VALUES('"+DNI+"','"+nombre+"','"+apellido+"','"+oficio+"','"+Falta+"','"+nacionaliddad+"','"+cargo+"','"+Ndepa+"') ";
+			      PreparedStatement preparedStmt = conexion.prepareStatement(query);
+			     
+			      preparedStmt.executeUpdate();
+			      
+			      preparedStmt.close();
+			      
+			
+				
+				
+				}catch (SQLException e) {
+					System.out.println("Error contratando al nuevo empleado");
+					
+				}
+	
+		}
+		if(eleccion==10) {
+			//nuevo cliente probar
+			System.out.print("Escribe el DNI del nuevo empleado");
+			String DNI = reader.readLine();
+			
+			System.out.print("Escribe el nombre del nuevo empleado:");
+			String nombre = reader.readLine();
+			
+			System.out.print("Escribe su apellido");
+			String apellido = reader.readLine();
+			
+			System.out.print("Edad");
+			int Ndepa= Integer.parseInt(reader.readLine());
+			
+			System.out.println("Profesión");
+			String profesion= reader.readLine();
+			
+			
+			try {
+			
+			
+			 String query = "INSERT INTO clientes(`DNI`,`Nombre`, `Apellido`, `Edad`, `Profesion`) VALUES('"+DNI+"','"+nombre+"','"+apellido+"','"+Ndepa+"','"+profesion+"') ";
+		      PreparedStatement preparedStmt = conexion.prepareStatement(query);
+		     
+		      preparedStmt.executeUpdate();
+		      
+		      preparedStmt.close();
+		      
+		
+			
+			
+			}catch (SQLException e) {
+				System.out.println("Error insertado el nuevo cliente");
+				
+			}
+			
+		}
+		if(eleccion==11) 
+		{
+			//nueva visita guiada,probar
+			System.out.print("Escribe el nombre del nuevo empleado:");
+			String nombre = reader.readLine();
+			
+			System.out.print("Describe la visita");
+			String visita = reader.readLine();
+			
+			
+			System.out.print("Número de clientes maximo");
+			int Max= Integer.parseInt(reader.readLine());
+			
+			
+			System.out.print("Coste de la visita");
+			double coste = Double.parseDouble(reader.readLine());
+			
+			
+			System.out.println("Lugar de partido");
+			String Lugarpartida= reader.readLine();
+			
+			System.out.println("Ubicacion de la visita");
+			String ubicacion = reader.readLine();
+			
+			String estado= "Activo";
+			
+			
+			try {
+			
+			
+			 String query = "INSERT INTO visitas(`Nombre`, `Tematica`, `ClientesM`, `Coste`,`LugarP`,`Ubicacion`,`Estado`) VALUES('"+nombre+"','"+visita+"','"+Max+"','"+coste+"','"+Lugarpartida+"','"+ubicacion+"','"+estado+"') ";
+		      PreparedStatement preparedStmt = conexion.prepareStatement(query);
+		     
+		      preparedStmt.executeUpdate();
+		      
+		      preparedStmt.close();
+		      
+		
+			
+			
+			}catch (SQLException e) {
+				System.out.println("Error insertado la nueva visita guiada");
+				
+			}
+		}
+		if(eleccion==12) {
+			//eliminar visita guiada
+			
+			System.out.print("Escribe el codigo de la visita que quieres eliminar");
+			int codigo= Integer.parseInt(reader.readLine());
+			
+			
+			String query ="DELETE FROM visitas WHERE `Codigo`='"+codigo+"'";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+			
+			System.out.println("Visita eliminada");
+			
+		}
+		if(eleccion==13) {
+			//editar cliente,probar
+			
+			System.out.println("Escribe el DNI del cliente al que quieras cambiar la profesion");
+			String dni= reader.readLine();
+			
+			System.out.println("Escribe la nueva profesión");
+			String profesion = reader.readLine();
+			
+			
+			String query ="UPDATE clientes SET `Profesion` = '"+profesion+"' WHERE (`DNI`='"+dni+"')";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			
+			System.out.println("Cliente editado, con exito");
+		}
+		if(eleccion==14) {
+			//editar visita guiada eliminar o eliminar el desactivo
+		}
+		if(eleccion==15) {
+			//asignar visita guiada a empleado, probar
+			
+			System.out.println("Escribe el DNI del empleado al que quieres asignar una nueva visita guiada, recuerda, un empleado solo puede estar a cargo de una visita guiada");
+			String dni= reader.readLine();
+			System.out.println("codigo de la visita que le asignaras");
+			int codigo= Integer.parseInt(reader.readLine());
+			
+			String query ="UPDATE visitas SET `V.cargo` = '"+codigo+"' WHERE (`DNI`='"+dni+"')";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
 		}
 	}
 }
