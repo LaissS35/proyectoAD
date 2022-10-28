@@ -294,6 +294,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			//funciona elimina linea seleccionada
 			//despedir empleado por DNI
 			System.out.print("Escribe el DNI del cliente que quieras echar");//AQUI
+			String empleado = reader.readLine();
 			
 			
 			String query ="DELETE FROM empleados WHERE `DNI`='"+empleado+"'";
@@ -310,7 +311,7 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			menu();
 		}
 		if(eleccion==9) {
-			//probar
+			//SE AÑADE UN EMPLEADO SIN VISITA 
 			
 				System.out.print("Escribe el DNI del nuevo empleado");
 				String DNI = reader.readLine();
@@ -326,13 +327,13 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				String nacionaliddad = reader.readLine();
 				System.out.println("Oficio");
 				String cargo= reader.readLine();
-				System.out.println("Número de visita guiada de la que esta acargo");
-				int Ndepa= Integer.parseInt(reader.readLine());
+				
+				
 				
 				try {
 				
 				
-				 String query = "INSERT INTO Empleados(`DNI`,`Nombre`, `Apellido`, `F.nacimiento`, `F.alta`,`Nacionalidad`.`Cargo`,`V.cargo`) VALUES('"+DNI+"','"+nombre+"','"+apellido+"','"+oficio+"','"+Falta+"','"+nacionaliddad+"','"+cargo+"','"+Ndepa+"') ";
+				 String query = "INSERT INTO Empleados(`DNI`,`Nombre`, `Apellido`, `F.nacimiento`, `F.alta`,`Nacionalidad`,`Cargo`) VALUES('"+DNI+"','"+nombre+"','"+apellido+"','"+oficio+"','"+Falta+"','"+nacionaliddad+"','"+cargo+"') ";
 			      PreparedStatement preparedStmt = conexion.prepareStatement(query);
 			     
 			      preparedStmt.executeUpdate();
@@ -340,16 +341,19 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			      preparedStmt.close();
 			      
 			
-				
+				System.out.print("nuevo empleado añadido");
 				
 				}catch (SQLException e) {
 					System.out.println("Error contratando al nuevo empleado");
+					e.printStackTrace();
 					
 				}
+				
+				menu();
 	
 		}
 		if(eleccion==10) {
-			//nuevo cliente probar
+			//FUNCIONA NUEVO CLIENTE
 			System.out.print("Escribe el DNI del nuevo empleado");
 			String DNI = reader.readLine();
 			
@@ -384,10 +388,11 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				
 			}
 			
+			menu();
 		}
 		if(eleccion==11) 
 		{
-			//nueva visita guiada,probar
+			//FUNCIONA, AÑADE NUEVA VISITA GUIADA
 			System.out.print("Escribe el nombre del nuevo empleado:");
 			String nombre = reader.readLine();
 			
@@ -429,9 +434,10 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 				System.out.println("Error insertado la nueva visita guiada");
 				
 			}
+			menu();
 		}
 		if(eleccion==12) {
-			//eliminar visita guiada
+			//FUNCIONA ELIMINACION DE VISITA GUIADA
 			
 			System.out.print("Escribe el codigo de la visita que quieres eliminar");
 			int codigo= Integer.parseInt(reader.readLine());
@@ -445,10 +451,11 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			
 			
 			System.out.println("Visita eliminada");
+			menu();
 			
 		}
 		if(eleccion==13) {
-			//editar cliente,probar
+			//editar cliente,FUNCIONA
 			
 			System.out.println("Escribe el DNI del cliente al que quieras cambiar la profesion");
 			String dni= reader.readLine();
@@ -464,23 +471,54 @@ BufferedReader reader =new BufferedReader(new InputStreamReader(System.in));
 			preparedStmt.close();
 			
 			System.out.println("Cliente editado, con exito");
+			menu();
 		}
 		if(eleccion==14) {
-			//editar visita guiada eliminar o eliminar el desactivo
+			//editar visita guiada 
+			
+			System.out.println("Escribe el codigo de la visita que quieres editar");
+			
+			int codigo= Integer.parseInt(reader.readLine());
+			
+			System.out.print("escribe su nueva descripción");
+			String descripcion = reader.readLine();
+			System.out.print("nuevos coste");
+			double coste = Double.parseDouble(reader.readLine());
+			System.out.print("número maximo de clientes");
+			int numeroM = Integer.parseInt(reader.readLine());
+			System.out.print("nuevo lugar de partida");
+			String lugarP =reader.readLine();
+			System.out.print("Ubicacion visita");
+			String ubicacion = reader.readLine();
+			System.out.print("su estado (activo o desactivo)");
+			String estado = reader.readLine();
+			
+			//CONTROLAR ESTADO, NUMERO DE CARACTERES EN CADA STRING
+			
+			String query ="UPDATE visitas SET `V.cargo` = '"+codigo+"' WHERE (`Codigo`='"+codigo+"')";
+			PreparedStatement preparedStmt = conexion.prepareStatement(query);
+			
+			preparedStmt.executeUpdate();
+			preparedStmt.close();
+			menu();
+			
 		}
 		if(eleccion==15) {
-			//asignar visita guiada a empleado, probar
+			//asignar visita guiada a empleado, FUNCIONA
 			
 			System.out.println("Escribe el DNI del empleado al que quieres asignar una nueva visita guiada, recuerda, un empleado solo puede estar a cargo de una visita guiada");
 			String dni= reader.readLine();
 			System.out.println("codigo de la visita que le asignaras");
 			int codigo= Integer.parseInt(reader.readLine());
 			
-			String query ="UPDATE visitas SET `V.cargo` = '"+codigo+"' WHERE (`DNI`='"+dni+"')";
+			//SI LA VISITA ESTA DESACTIVADA IMPEDIR QUE SE LE ASIGNE
+			
+			String query ="UPDATE Empleados SET `V.cargo` = '"+codigo+"' WHERE (`DNI`='"+dni+"')";
 			PreparedStatement preparedStmt = conexion.prepareStatement(query);
 			
 			preparedStmt.executeUpdate();
 			preparedStmt.close();
+			menu();
 		}
 	}
 }
