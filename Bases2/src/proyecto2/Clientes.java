@@ -77,8 +77,7 @@ public class Clientes {
 
 		try {
 
-			String query = "INSERT INTO VisitaC(`Cvisita`,`Horario`, `DNIc`) VALUES('" + codigo + "','" + hora
-					+ "','" + DNI + "') ";
+			String query = "INSERT INTO VisitaC(`Cvisita`,`Horario`, `DNIc`) VALUES('" + codigo + "','" + hora+ "','" + DNI + "') ";
 			PreparedStatement preparedStmt = conexion.prepareStatement(query);
 
 			preparedStmt.executeUpdate();

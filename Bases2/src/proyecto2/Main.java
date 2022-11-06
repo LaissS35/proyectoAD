@@ -69,7 +69,7 @@ public class Main {
 		
 		//H2
 		Class.forName("org.h2.Driver");
-		Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/turismo", "root","soylalecheN7");//h2 server
+		Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/turismo", "root","soylalecheN7");
 		
 		
 		
@@ -93,7 +93,7 @@ public class Main {
 				} catch (NumberFormatException e) {
 					System.out.println("escribe un valor numerico");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				
@@ -198,13 +198,11 @@ public class Main {
 	private static void Mcaloriego(BufferedReader reader)throws ClassNotFoundException, SQLException, NumberFormatException, IOException {
 		boolean seguir=false;
 		boolean correcto= false;
-		// SQLlite
-		// Driver
+		// SQLite
+		
 		Class.forName("org.sqlite.JDBC");
-		// Establecemos la conexion con la BD
 		Connection conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
 
-		//DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();// Creamos objeto DatabaseMetaData H2
 
 		do {
 			System.out.println(
@@ -333,16 +331,15 @@ public class Main {
 			throws NumberFormatException, IOException, SQLException, ClassNotFoundException {
 		boolean seguir=false;
 		boolean correcto= false;
-		// H2
+	
 
-		// Cargar el driver mysql
+		// mysql
 		Class.forName("com.mysql.cj.jdbc.Driver");
-
-		// Establecemos la conexion con la BD
-
-		Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/turismo", "root", "soylalecheN7"); // mysql
-
-		DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();// Creamos objeto DatabaseMetaData H2
+		Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/turismo", "root", "soylalecheN7"); 
+		
+		
+		
+		DatabaseMetaData dbmd = (DatabaseMetaData) conexion.getMetaData();
 
 		do {
 			System.out.println(
@@ -513,7 +510,7 @@ public class Main {
 		System.out.println();// espacio
 
 		while (resul.next()) {
-			String catal = resul.getString(1);// columna1
+			String catal = resul.getString(1);
 			String esquema = resul.getString(2);
 			String tabla = resul.getString(3);
 			String tipo = resul.getString(4);
@@ -545,7 +542,7 @@ public class Main {
 		System.out.println();// espacio
 
 		while (resul.next()) {
-			String catal = resul.getString(1);// columna1
+			String catal = resul.getString(1);
 			String esquema = resul.getString(2);
 			String tabla = resul.getString(3);
 			String tipo = resul.getString(4);

@@ -184,8 +184,7 @@ public class Empleados {
 
 		try {
 
-			String query = "INSERT INTO Empleados(`DNI`,`Nombre`, `Apellido`, `Fnacimiento`, `Falta`,`Nacionalidad`,`Cargo`) VALUES('"
-					+ DNI + "','" + nombre + "','" + apellido + "','" + oficio + "','" + Falta + "','" + nacionalidad
+			String query = "INSERT INTO Empleados(`DNI`,`Nombre`, `Apellido`, `Fnacimiento`, `Falta`,`Nacionalidad`,`Cargo`) VALUES('"+ DNI + "','" + nombre + "','" + apellido + "','" + oficio + "','" + Falta + "','" + nacionalidad
 					+ "','" + cargo + "') ";
 			PreparedStatement preparedStmt = conexion.prepareStatement(query);
 
