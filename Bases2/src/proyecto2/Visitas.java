@@ -28,11 +28,11 @@ public class Visitas {
 				i++;
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error con el codigo de las visitas");
 		}
 
 		Codigovisita(conexion);// mostrar codigo y nombre de la visita
@@ -47,29 +47,31 @@ public class Visitas {
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
-					break;// salir del bucle
+					break;
 				}
 			}
 		} while (!seguir);
+		
+		//MOSTRAR CLIENTES EN VISITAS
 
 		try {
 
 			Statement sentencia = conexion.createStatement();
 			ResultSet resul = ((java.sql.Statement) sentencia)
-					.executeQuery("SELECT * FROM VisitaC WHERE `Cvisita`='" + codigo + "'");
+					.executeQuery("SELECT * FROM VisitaC WHERE `Cvisita`='" + codigo + "'"); //ver clientes registrados en una visita
 
 			while (resul.next()) {
-				System.out.println("Codigo de la visita: " + resul.getInt(1) + " Horario de la visita: "
+				System.out.println("Codigo de la visita: " + resul.getInt(1) + "fecha y horario de la visita: "
 						+ resul.getString(2) + " DNI del cliente que va: " + resul.getString(3));
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 			System.out.println("Fin de lectura");
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error mostrando el registro de clientes en la visita");
 		}
 		
 	}
@@ -92,14 +94,14 @@ public class Visitas {
 				i++;
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 		} catch (SQLException e) {
 			System.out.println("error conn la base de datos");
 		}
 
-		Codigovisita(conexion);// mostrar codigo y nombre de la visita DEBE MOSTRAR TODO
+		Codigovisita(conexion);// mostrar codigo y nombre de la visita 
 
 		int codigo;
 		// verificar que el usuario mete un codigo existente
@@ -111,10 +113,12 @@ public class Visitas {
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
-					break;// salir del bucle
+					break;
 				}
 			}
 		} while (!seguir);
+		
+		//ELIMINAR VISITA
 
 		try {
 			String query = "DELETE FROM visitas WHERE `Codigo`='" + codigo + "'";
@@ -212,12 +216,14 @@ public class Visitas {
 				seguir = true;
 			}
 		} while (!seguir);
+		
+		//INSERTAR NUEVA VISITA
 
 		try {
 
 			String query = "INSERT INTO visitas(`Nombre`, `Tematica`, `ClientesM`, `Coste`,`LugarP`,`Ubicacion`) VALUES('"
 					+ nombre + "','" + visita + "','" + Max + "','" + coste + "','" + Lugarpartida + "','" + ubicacion
-					+ "') ";
+					+ "') ";//nueva visita
 			PreparedStatement preparedStmt = conexion.prepareStatement(query);
 
 			preparedStmt.executeUpdate();
@@ -244,11 +250,11 @@ public class Visitas {
 				System.out.println("Visita con codigo: " + resul.getInt(1) + " Nombre: " + resul.getString(2));
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error mostrando el codigo de las visitas");
 		}
 
 	}
@@ -260,8 +266,6 @@ public class Visitas {
 			Statement sentencia = conexion.createStatement();
 			ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM visitas");
 
-			// Recorremos el resultado para visualizar
-			// Se hace un bucle mientras haya registros visualizando
 			while (resul.next()) {
 				System.out.println("Codigo: " + resul.getInt(1) + " Nombre: " + resul.getString(2) + " Tematica: "
 						+ resul.getString(3) + " Número de clientes permitidos: " + resul.getInt(4) + " Coste: "
@@ -269,13 +273,13 @@ public class Visitas {
 						+ resul.getString(7));
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 			System.out.println("Fin de lectura");
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error mostrando las visitas");
 
 		}
 

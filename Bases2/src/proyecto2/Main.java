@@ -19,7 +19,7 @@ public class Main {
 			throws IOException, NumberFormatException, ClassNotFoundException, SQLException {
 		// H2, mysql, sqllite
 
-		menu();
+		menu();//muestra el primer menu en el que se da la opcion deelegir una de las 4 agencias de turismo
 
 	}
 
@@ -37,6 +37,7 @@ public class Main {
 			} catch (NumberFormatException e) {
 				System.out.println("escribe un valor númerico");
 			} 
+			
 			switch (opcion) {
 			case 1: {
 				Mpinkilo(reader);
@@ -48,17 +49,18 @@ public class Main {
 			}
 			case 3: {
 				Mcaloriego(reader);
+				break;
 			}
 			case 4: {
 				System.out.println("Fin del programa");
-				seguir = true;
+				seguir = true;//para que termine el programa entero
 				break;
 			}
 
 			default:
 				System.out.println("opcion no valida: " + opcion);
 			}
-		} while (!seguir);
+		} while (!seguir);//hasta que no ponga una opcion valida o 4 se seguira repitiendo.
 
 	
 
@@ -68,8 +70,11 @@ public class Main {
 	private static void Mavian(BufferedReader reader) throws NumberFormatException, ClassNotFoundException, IOException, SQLException {
 		
 		//H2
-		Class.forName("org.h2.Driver");
-		Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/turismo", "root","soylalecheN7");
+		Connection conexion;
+		try {
+			Class.forName("org.h2.Driver");
+			conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/turismo", "root","soylalecheN7");
+		
 		
 		
 		
@@ -84,6 +89,7 @@ public class Main {
 							+ " \n9.-añadir nuevo cliente  \n10.-contratar empleado \n11.-nueva visita guiada \n12.-añadir cliente a una visita \n13.-asignar una visita a un empleado \n14.-editar visita guiada \n15.-editar cliente"
 							+ "\n16.-información de la base de datos \n17.-volver al menú principal");
 			int eleccion=0;
+			
 			do {
 				try {
 					eleccion = Integer.parseInt(reader.readLine());
@@ -97,9 +103,11 @@ public class Main {
 					e.printStackTrace();
 				}
 				
-			} while (!correcto);
+			} while (!correcto);//hasta que no meta un número superior a 0 no avanzara
+			
 		
 		switch (eleccion) {
+		//apartir de aquie se llama a cada metodo correspondiente a la opcion selecionada y tras terminar el proceso volvera a mostrar el menu de la agencia
 		case 1: {
 			verEmpresa(conexion);
 			Mavian(reader);
@@ -107,7 +115,6 @@ public class Main {
 		}
 		case 2: {
 			Empleados.verEmpleados(conexion);
-			//verEmpleados(conexion);
 			Mavian(reader);
 			break;
 		}
@@ -185,12 +192,19 @@ public class Main {
 		}
 		case 17: {
 			seguir=true;
-			menu();
+			menu();//volver al menu de eleccion de agencias
 			break;
 		}
 		default:
 			throw new IllegalArgumentException("esta opción no sirve: " + eleccion);
-		}}while(!seguir);
+		}
+		}while(!seguir);
+		
+		} catch (ClassNotFoundException e1) {
+			System.out.println("Error al intentar conectarse a la base de datos, asegurate de que esta conectada");
+		} catch (SQLException e1) {
+			System.out.println("Error al intentar conectarse a la base de datos, asegurate de que esta conectada");
+		}
 		
 	}
 
@@ -223,7 +237,7 @@ public class Main {
 					e.printStackTrace();
 				}
 				
-			} while (!correcto);
+			} while (!correcto);//hasta que no se meta un numero superior a 0 el bucle no terminara
 			
 			
 			
@@ -356,7 +370,6 @@ public class Main {
 				} catch (NumberFormatException e) {
 					System.out.println("escribe un valor numerico");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -463,7 +476,7 @@ public class Main {
 	
 
 	
-
+//muestra los datos de la empresa, nombre,propietario...
 	private static void verEmpresa(Connection conexion) {
 		try {
 

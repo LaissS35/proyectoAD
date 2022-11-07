@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Clientes {
-	
+
 	public static void registrarClienteVisi(Connection conexion, BufferedReader reader) throws IOException {
 		boolean seguir = false;
 		int i = 0;
@@ -29,11 +29,11 @@ public class Clientes {
 				i++;
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error con el codigo de las visitas");
 		}
 
 		Visitas.Codigovisita(conexion);// mostrar codigo y nombre de la visita
@@ -48,15 +48,14 @@ public class Clientes {
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
-					break;// salir del bucle
+					break;
 				}
 			}
-		} while (!seguir);// AQUI
+		} while (!seguir);
 
 		DNIcliente(conexion);// mostrar dni y nombre cliente
 
 		boolean ar = false;
-		// asegurar que el dni mide 9 caracteres
 
 		String DNI;
 		do {
@@ -71,13 +70,27 @@ public class Clientes {
 			}
 
 		} while (!ar);
+		
+		ar=false;
+		
 
-		System.out.print("Escribe a que hora empezara");
-		String hora = reader.readLine();
+		String hora;
+		do {
+			System.out.print("Escribe a que hora empezara");
+			hora = reader.readLine();
+			if(hora.length()>=5) {
+				ar=true;
+			}else {
+				System.out.println("minimo 5 caracteres");
+			}
+		} while (!ar);
+		
+		//INSERCION DE NUEVO CLIENTE EN UNA VISITA
 
 		try {
 
-			String query = "INSERT INTO VisitaC(`Cvisita`,`Horario`, `DNIc`) VALUES('" + codigo + "','" + hora+ "','" + DNI + "') ";
+			String query = "INSERT INTO VisitaC(`Cvisita`,`Horario`, `DNIc`) VALUES('" + codigo + "','" + hora + "','"
+					+ DNI + "') ";
 			PreparedStatement preparedStmt = conexion.prepareStatement(query);
 
 			preparedStmt.executeUpdate();
@@ -85,14 +98,11 @@ public class Clientes {
 			preparedStmt.close();
 
 		} catch (SQLException e) {
-			System.out.println("Error insertado el nuevo cliente");
+			System.out.println("Error insertado el cliente en una visita");
 
 		}
 
-		
 	}
-	
-	
 
 	public static void editarCliente(Connection conexion, BufferedReader reader) throws IOException {
 		DNIcliente(conexion);// mostrar dni y nombre cliente
@@ -106,6 +116,7 @@ public class Clientes {
 			DNI = reader.readLine();
 
 			if (DNI.length() == 9) {
+				ar=true;
 
 				break;
 			} else {
@@ -113,9 +124,22 @@ public class Clientes {
 			}
 
 		} while (!ar);
+		
+		ar=false;
+		
 
-		System.out.println("Escribe la nueva profesión");
-		String profesion = reader.readLine();
+		String profesion;
+		do {
+			System.out.println("Escribe la nueva profesión");
+			profesion = reader.readLine();
+			if(profesion.length()>=4) {
+				ar=true;
+			}else {
+				System.out.println("minimo 4 caracteres");
+			}
+		} while (!ar);
+		
+		//EDITAR EL CLIENTE
 
 		try {
 			String query = "UPDATE clientes SET `Profesion` = '" + profesion + "' WHERE (`DNI`='" + DNI + "')";
@@ -130,36 +154,34 @@ public class Clientes {
 		}
 
 	}
-	
-	
-	
+
 	public static void verClientes(Connection conexion) {
+		
 		try {
 
 			Statement sentencia = conexion.createStatement();
 			ResultSet resul = ((java.sql.Statement) sentencia).executeQuery("SELECT * FROM clientes");
 
-			// Recorremos el resultado para visualizar
-			// Se hace un bucle mientras haya registros visualizando
+			
 			while (resul.next()) {
 				System.out.println("DNI: " + resul.getString(1) + " Nombre: " + resul.getString(2) + " Apellido: "
 						+ resul.getString(3) + " Edad: " + resul.getInt(4) + " Profesión: " + resul.getString(5));
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 			System.out.println("Fin de lectura");
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error mostrando los clientes");
 
 		}
 
 	}
-	
 
 	public static void DNIcliente(Connection conexion) {
+		//MOSTRAR DNI DE LOS CLIENTES
 
 		try {
 
@@ -170,27 +192,25 @@ public class Clientes {
 				System.out.println("DNI cliente : " + resul.getString(1) + " Nombre: " + resul.getString(2));
 			}
 
-			resul.close();// Cerrar ResultSet
-			sentencia.close();// Cerrar Statement
+			resul.close();
+			sentencia.close();
 
 		} catch (SQLException e) {
-			System.out.println("error conn la base de datos");
+			System.out.println("error mostrando el DNI de los clientes");
 		}
 
 	}
-	
-	
+
 	public static void eliminarCliente(Connection conexion, BufferedReader reader) throws IOException {
 		boolean seguir = false;
 		// eliminar cliente
-		
-		
-		DNIcliente(conexion);//muestra el dni y nombre del cliente
+
+		DNIcliente(conexion);// muestra el dni y nombre del cliente
 
 		String empleado;
 		do {
-			// despedir empleado por DNI
-			System.out.print("Escribe el DNI del cliente que quieras echar");// AQUI
+
+			System.out.print("Escribe el DNI del cliente que quieras echar");
 			empleado = reader.readLine();
 			if (empleado.length() == 9) {
 				seguir = true;
@@ -198,9 +218,11 @@ public class Clientes {
 				System.out.println("este dni no sirve");
 			}
 		} while (!seguir);
+		
+		//ELIMINAR EL CLIENTE
 
 		try {
-			String query = "DELETE FROM empleados WHERE `DNI`='" + empleado + "'";
+			String query = "DELETE FROM clientes WHERE `DNI`='" + empleado + "'";
 			PreparedStatement preparedStmt = conexion.prepareStatement(query);// con este metodo ya que estamos haciendo
 																				// un cambio en la base
 
@@ -209,13 +231,14 @@ public class Clientes {
 
 			System.out.println("empleado despedido");
 		} catch (SQLException e) {
-			System.out.println("error con la base de datos");
+			System.out.println("error eliminando un cliente");
 		}
 	}
-	
-	
+
 	public static void meterCliente(Connection conexion, BufferedReader reader) throws IOException {
 		boolean seguir = false;
+		
+		//BUCLES PARA VERIFICAR QUE SE METEN BIEN LOS VALORES
 		String DNI;
 		do {
 			System.out.print("Escribe el DNI del nuevo empleado");
@@ -278,6 +301,8 @@ public class Clientes {
 				seguir = true;
 			}
 		} while (!seguir);
+		
+		//METER EL DATO
 
 		try {
 
