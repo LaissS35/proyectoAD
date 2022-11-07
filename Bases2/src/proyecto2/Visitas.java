@@ -113,13 +113,21 @@ public class Visitas {
 
 		Codigovisita(conexion);// mostrar codigo y nombre de la visita 
 
-		int codigo;
+		int codigo=-1;
 		// verificar que el usuario mete un codigo existente
 
 		do {
 			//
 			System.out.println("Escribe el codigo de la visita que quieres eliminar");
-			codigo = Integer.parseInt(reader.readLine());
+			
+			try {
+				codigo = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("mete unvalor númerico");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
@@ -176,14 +184,13 @@ public class Visitas {
 
 		seguir = false;
 
-		int Max;
+		int Max=1;
 		do {
 			System.out.println("Número de clientes maximo");
 			try {
 				Max = Integer.parseInt(reader.readLine());
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("mete unvalor númerico");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -198,10 +205,17 @@ public class Visitas {
 
 		seguir = false;
 
-		double coste;
+		double coste=0;
 		do {
 			System.out.println("Coste de la visita");
-			coste = Double.parseDouble(reader.readLine());
+			try {
+				coste = Double.parseDouble(reader.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("mete unvalor númerico");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (coste < 100) {
 				System.out.println("minimo un coste de 100");
 			} else {

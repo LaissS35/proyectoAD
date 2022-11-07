@@ -256,7 +256,7 @@ public class Empleados {
 
 		Visitas.Codigovisita(conexion);// mostrar codigo y nombre de la visita
 
-		int codigo;
+		int codigo=-1;
 		// verificar que el usuario mete un codigo existente
 
 		do {
@@ -265,8 +265,7 @@ public class Empleados {
 			try {
 				codigo = Integer.parseInt(reader.readLine());
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("mete unvalor númerico");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
