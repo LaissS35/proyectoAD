@@ -22,7 +22,7 @@ public class Empleados {
 				System.out.println("DNI: " + resul.getString(1) + " Nombre: " + resul.getString(2) + " Apellido: "
 						+ resul.getString(3) + " Fecha de Nacimiento: " + resul.getString(4) + " Fecha Alta: "
 						+ resul.getString(5) + " Nacionalidad: " + resul.getString(6) + " Cargos: " + resul.getString(7)
-						+ " ESta acagor de la visita con codigo: " + resul.getInt(8));
+						+ " Esta acagor de la visita con codigo: " + resul.getInt(8));
 			}
 
 			resul.close();
@@ -262,7 +262,15 @@ public class Empleados {
 		do {
 			//
 			System.out.println("Escribe el codigo de la visita que quieres consultar");
-			codigo = Integer.parseInt(reader.readLine());
+			try {
+				codigo = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
@@ -317,13 +325,21 @@ public class Empleados {
 
 		Visitas.Codigovisita(conexion);// mostrar codigo y nombre de la visita DEBE MOSTRAR TODO
 
-		int codigo;
+		int codigo=-1;
 		// verificar que el usuario mete un codigo existente
 
 		do {
 			//
 			System.out.println("Escribe el codigo de la visita que quieres editar");
-			codigo = Integer.parseInt(reader.readLine());
+			try {
+				codigo = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Escribe un valor númerico");
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+			
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;

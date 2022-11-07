@@ -37,13 +37,23 @@ public class Visitas {
 
 		Codigovisita(conexion);// mostrar codigo y nombre de la visita
 
-		int codigo;
+		int codigo=-1;
 		// verificar que el usuario mete un codigo existente
 
 		do {
 			//
-			System.out.println("Escribe el codigo de la visita que quieres consultar");
-			codigo = Integer.parseInt(reader.readLine());
+			try {
+				System.out.println("Escribe el codigo de la visita que quieres consultar");
+				codigo = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Mete un valor númerico");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
@@ -61,7 +71,7 @@ public class Visitas {
 					.executeQuery("SELECT * FROM VisitaC WHERE `Cvisita`='" + codigo + "'"); //ver clientes registrados en una visita
 
 			while (resul.next()) {
-				System.out.println("Codigo de la visita: " + resul.getInt(1) + "fecha y horario de la visita: "
+				System.out.println("Codigo de la visita: " + resul.getInt(1) + " fecha y horario de la visita: "
 						+ resul.getString(2) + " DNI del cliente que va: " + resul.getString(3));
 			}
 
@@ -169,7 +179,15 @@ public class Visitas {
 		int Max;
 		do {
 			System.out.println("Número de clientes maximo");
-			Max = Integer.parseInt(reader.readLine());
+			try {
+				Max = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (Max < 3) {
 				System.out.println("minimo 3 clientes");

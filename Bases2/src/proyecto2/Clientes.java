@@ -44,7 +44,15 @@ public class Clientes {
 		do {
 			//
 			System.out.println("Escribe el codigo de visita en la que quieres meter un cliente");
-			codigo = Integer.parseInt(reader.readLine());
+			try {
+				codigo = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			for (int x = 0; x < codigos.length; x++) {
 				if (codigo == codigos[x]) {
 					seguir = true;
@@ -278,10 +286,19 @@ public class Clientes {
 
 		seguir = false;
 
-		int Ndepa;
+		int Ndepa=0;
 		do {
 			System.out.print("Edad");
-			Ndepa = Integer.parseInt(reader.readLine());
+			
+			try {
+				Ndepa = Integer.parseInt(reader.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("escribe un valor numerico");
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+			
 			if (Ndepa < 18) {
 				System.out.println("minimo debes tener 18 años");
 			} else {

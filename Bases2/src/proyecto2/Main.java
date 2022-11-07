@@ -58,7 +58,7 @@ public class Main {
 			}
 
 			default:
-				System.out.println("opcion no valida: " + opcion);
+				System.out.println("opcion no valida " );
 			}
 		} while (!seguir);//hasta que no ponga una opcion valida o 4 se seguira repitiendo.
 
@@ -70,10 +70,10 @@ public class Main {
 	private static void Mavian(BufferedReader reader) throws NumberFormatException, ClassNotFoundException, IOException, SQLException {
 		
 		//H2
-		Connection conexion;
+		
 		try {
 			Class.forName("org.h2.Driver");
-			conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/turismo", "root","soylalecheN7");
+			Connection conexion = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/turismo", "root","soylalecheN7");
 		
 		
 		
@@ -214,8 +214,11 @@ public class Main {
 		boolean correcto= false;
 		// SQLite
 		
-		Class.forName("org.sqlite.JDBC");
-		Connection conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
+		
+		try {
+			Class.forName("org.sqlite.JDBC");
+		Connection	conexion = DriverManager.getConnection("jdbc:sqlite:/Users/lais/Desktop/Turismo.db");
+		
 
 
 		do {
@@ -338,6 +341,11 @@ public class Main {
 			
 
 	}while(!seguir);
+		} catch (ClassNotFoundException e1) {
+			System.out.println("Error al intentar conectarse a la base de datos, asegurate de que esta todo correctamente");
+		} catch (SQLException e1) {
+			System.out.println("Error al intentar conectarse a la base de datos, asegurate de que esta todo correctamente");
+		}
 		}
 
 	// menu PINKILO
@@ -348,8 +356,10 @@ public class Main {
 	
 
 		// mysql
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/turismo", "root", "soylalecheN7"); 
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/turismo", "root", "soylalecheN7");
 		
 		
 		
@@ -469,7 +479,12 @@ public class Main {
 			}
 		} while (!seguir);
 
-
+		} catch (ClassNotFoundException e1) {
+			System.out.println("Error al intentar conectarse a la base de datos, asegurate de que esta todo correctamente");
+		} catch (SQLException e1) {
+			System.out.println("Error al intentar conectarse a la base de datos, asegurate de que esta todo correctamente");
+		} 
+		
 	
 
 	}
